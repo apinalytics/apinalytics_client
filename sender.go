@@ -97,7 +97,7 @@ func (sender *Sender) add(event *AnalyticsEvent) bool {
 
 // Reset the event map that's used to batch events
 func (sender *Sender) reset() {
-	sender.events = make([]*AnalyticsEvent, 10)
+	sender.events = make([]*AnalyticsEvent, 0, 10)
 	sender.count = 0
 }
 
