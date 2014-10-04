@@ -60,10 +60,15 @@ func BuildMiddleWare(applicationId string,
 
 			h.ServeHTTP(ww, r)
 
+			function := c.Env["function"].(string)
+			if function == "" {
+				function = "unknown"
+			}
 			event := &AnalyticsEvent{
 				Timestamp:  time.Now(),
 				Method:     r.Method,
 				Url:        r.RequestURI,
+				Function:   function,
 				ResponseUS: int(time.Since(start).Nanoseconds() / 1000),
 				StatusCode: ww.Status,
 			}
