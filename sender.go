@@ -13,7 +13,7 @@ import (
 
 const (
 	// Server URL
-	url string = "http://127.0.0.1:7998/1/event/"
+	// url string = "http://127.0.0.1:7998/1/event/"
 	// The size of the queue to the background goroutine
 	channel_size int = 100
 	// The background routine will send batches of events up to this size
@@ -46,7 +46,7 @@ Create a new Sender.
 
 This creates a background goroutine to aggregate and send your events.
 */
-func NewSender(applicationId string) *Sender {
+func NewSender(applicationId, url string) *Sender {
 	sender := &Sender{
 		applicationId: applicationId,
 		channel:       make(chan *AnalyticsEvent, channel_size),
