@@ -22,7 +22,7 @@ const (
 
 // Type for queuing events to the background
 type AnalyticsEvent struct {
-	Timestamp  time.Time         `json:"timestamp"`
+	Timestamp  int64             `json:"timestamp"`
 	ConsumerId string            `json:"consumer_id"`
 	Method     string            `json:"method"`
 	Url        string            `json:"url"`
