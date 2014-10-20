@@ -22,14 +22,22 @@ const (
 
 // Type for queuing events to the background
 type AnalyticsEvent struct {
-	Timestamp  int64             `json:"timestamp"`
-	ConsumerId string            `json:"consumer_id"`
-	Method     string            `json:"method"`
-	Url        string            `json:"url"`
-	Function   string            `json:"function",omitempty`
-	ResponseUS int               `json:"response_us"`
-	StatusCode int               `json:"status_code"`
-	Data       map[string]string `json:"data",omitempty`
+	// Timestamp for this event in seconds since 1 Jan 1970 UTC
+	Timestamp int64 `json:"timestamp"`
+	// Identifier for the API consumer
+	ConsumerId string `json:"consumer_id"`
+	// HTTP Method used ("GET", "POST", etc.)
+	Method string `json:"method"`
+	// Url used (including parameters)
+	Url string `json:"url"`
+	// Name of the function invoked.
+	Function string `json:"function",omitempty`
+	// API response time in microseconds
+	ResponseUS int `json:"response_us"`
+	// HTTP status code
+	StatusCode int `json:"status_code"`
+	// Arbitrary key, value pairs to report.  Not yet implemented
+	Data map[string]string `json:"data",omitempty`
 }
 
 type Sender struct {
@@ -45,6 +53,9 @@ type Sender struct {
 Create a new Sender.
 
 This creates a background goroutine to aggregate and send your events.
+
+ applicationId - Identifies the application generating the events.
+ url           - URL of the Apinalytics service
 */
 func NewSender(applicationId, url string) *Sender {
 	sender := &Sender{
@@ -59,7 +70,7 @@ func NewSender(applicationId, url string) *Sender {
 }
 
 /*
-Queue events to be sent to Keen.io
+Queue events to be sent to Apinalytics
 
 info can be anything that is JSON serializable.  Events are immediately queued to a background goroutine for sending.  The
 background routine will send everything that's queued to it in a batch, then wait for new data.
