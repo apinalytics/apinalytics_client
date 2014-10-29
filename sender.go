@@ -42,6 +42,7 @@ type AnalyticsEvent struct {
 
 type Sender struct {
 	applicationId string
+	writeKey      string
 	url           string               // The url to post events too, including project details
 	events        []*AnalyticsEvent    // For batching events as we pull them off the channel
 	count         int                  // Number of events batched and ready to send
@@ -57,9 +58,10 @@ This creates a background goroutine to aggregate and send your events.
  applicationId - Identifies the application generating the events.
  url           - URL of the Apinalytics service
 */
-func NewSender(applicationId, url string) *Sender {
+func NewSender(applicationId, writeKey, url string) *Sender {
 	sender := &Sender{
 		applicationId: applicationId,
+		writeKey:      writeKey,
 		channel:       make(chan *AnalyticsEvent, channel_size),
 		done:          make(chan bool),
 	}
@@ -135,6 +137,7 @@ func (sender *Sender) send() {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Auth-User", sender.applicationId)
+	req.Header.Set("X-Auth-Key", sender.writeKey)
 	rsp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Printf("Failed to post analytics events.  %v\n", err)

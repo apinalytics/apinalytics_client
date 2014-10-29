@@ -47,10 +47,10 @@ The callback function allows you to add your own data to the event recorded.  Us
     m.Use(BuildMiddleWare(myApplicationId, callback))
 
 */
-func BuildMiddleWare(applicationId, url string,
+func BuildMiddleWare(applicationId, writeKey, url string,
 	callback func(c *web.C, event *AnalyticsEvent, r *http.Request),
 ) func(c *web.C, h http.Handler) http.Handler {
-	sender := NewSender(applicationId, url)
+	sender := NewSender(applicationId, writeKey, url)
 
 	// Return the middleware that references the analytics queue we just made
 	return func(c *web.C, h http.Handler) http.Handler {
