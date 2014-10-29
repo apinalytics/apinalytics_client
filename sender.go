@@ -1,5 +1,15 @@
 /*
-Send events to apinalytics.io asynchronously in batches.
+Package apinalytics_client sends events to apinalytics asynchronously in batches.
+
+To get started go to http://apinalytics.tanktop.tv/u/ and login with your github account.
+This will give you an ApplicationId, a Write key (which you need to send events) and a
+Read key (which you need to query events).
+
+You can then send events using our [Goji middleware](https://github.com/apinalytics/apinalytics/goji), or directly
+by creating a Sender (see NewSender), then calling Sender.Queue() to send the events.
+
+To see the data take a look over at github.com/apinalytics/apinalytics where you can find
+an example html dashboard.
 */
 package apinalytics_client
 
@@ -20,7 +30,7 @@ const (
 	send_threshold int = 90
 )
 
-// Type for queuing events to the background
+// AnalyticsEvent records an API call.
 type AnalyticsEvent struct {
 	// Timestamp for this event in seconds since 1 Jan 1970 UTC
 	Timestamp int64 `json:"timestamp"`
@@ -40,6 +50,9 @@ type AnalyticsEvent struct {
 	Data map[string]string `json:"data",omitempty`
 }
 
+/*
+Sender is used to send events to apinalytics.  Create a sender using NewSender.
+*/
 type Sender struct {
 	applicationId string
 	writeKey      string
@@ -51,12 +64,13 @@ type Sender struct {
 }
 
 /*
-Create a new Sender.
+NewSender creates a new Sender.
 
 This creates a background goroutine to aggregate and send your events.
 
  applicationId - Identifies the application generating the events.
- url           - URL of the Apinalytics service
+ writeKey      - Your apinalytics write key
+ url           - URL of the Apinalytics service (usually http://apinalytics.tanktop.tv)
 */
 func NewSender(applicationId, writeKey, url string) *Sender {
 	sender := &Sender{
