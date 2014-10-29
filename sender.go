@@ -5,7 +5,7 @@ To get started go to http://apinalytics.tanktop.tv/u/ and login with your github
 This will give you an ApplicationId, a Write key (which you need to send events) and a
 Read key (which you need to query events).
 
-You can then send events using our [Goji middleware](https://github.com/apinalytics/apinalytics/goji), or directly
+You can then send events using our Goji middleware (https://github.com/apinalytics/apinalytics/goji), or directly
 by creating a Sender (see NewSender), then calling Sender.Queue() to send the events.
 
 To see the data take a look over at github.com/apinalytics/apinalytics where you can find

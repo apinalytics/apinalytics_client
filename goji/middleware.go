@@ -1,5 +1,5 @@
 /*
-Package goji contains [Goji](https://github.com/zenazn/goji) middleware for reporting events to Apinalytics.
+Package goji contains Goji (https://github.com/zenazn/goji) middleware for reporting events to Apinalytics.
 
 To get started go to http://apinalytics.tanktop.tv/u to get an application Id and write key.
 */
