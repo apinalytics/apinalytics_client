@@ -55,7 +55,11 @@ func BuildMiddleWare(applicationId, writeKey, url string,
 
 			h.ServeHTTP(ww, r)
 
-			function := c.Env["function"].(string)
+			var function string
+			if ff, ok := c.Env["function"]; ok && ff != nil {
+				function = ff.(string)
+			}
+
 			if function == "" {
 				function = "unknown"
 			}
