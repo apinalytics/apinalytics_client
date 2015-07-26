@@ -18,7 +18,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 )
 
 const (
@@ -143,7 +142,6 @@ func (sender *Sender) send() {
 		return
 	}
 
-	start := time.Now()
 	req, err := http.NewRequest("POST", sender.url, strings.NewReader(string(data)))
 	if err != nil {
 		log.Printf("Failed to build analytics POST. %v", err)
@@ -161,9 +159,6 @@ func (sender *Sender) send() {
 
 	if rsp.StatusCode != http.StatusOK {
 		log.Printf("Failure return for analytics post.  %d, %s\n", rsp.StatusCode, rsp.Status)
-	} else {
-		// TODO: remove once analytics has bedded in
-		log.Printf("analytics sent in %v\n", time.Since(start))
 	}
 }
 
